@@ -1,0 +1,63 @@
+# ============================================================
+# BTC Polymarket 5m / 15m Trading Bot — Configuration
+# ============================================================
+# Secrets (PRIVATE_KEY, API_KEY, etc.) are loaded from .env
+# Everything else is configured here.
+
+# ---- General ------------------------------------------------
+dry_run: false                   # true = log trades only, false = real orders
+timeframes: [5, 15]              # which BTC window lengths to trade (minutes)
+
+# ---- Market & Liquidity Filters -----------------------------
+market_filter:
+  min_liquidity_usd: 500         # skip markets with less total liquidity
+  max_spread: 0.08               # skip if best-ask minus best-bid > this
+  min_seconds_before_close: 45   # don't enter if market closes in < N seconds
+
+# ---- Price-Move / Latency Edge -----------------------------
+price_edge:
+  btc_price_source: "binance"  # "coingecko", "binance", or "coinbase"
+  latency_threshold: 0.02        # only trade when polymarket odds lag BTC move by ≥ this
+  price_poll_interval: 3         # seconds between BTC price checks
+
+# ---- Streak / Mean-Reversion Filter -------------------------
+streak_filter:
+  enabled: true
+  streak_trigger: 4              # consecutive same-direction closes to trigger signal
+  lookback_windows: 10           # how many past windows to analyze
+  min_confidence: 0.55           # minimum estimated win probability to trade
+  reversal_rates:                # historical reversal rates by streak length
+    2: 0.540
+    3: 0.579
+    4: 0.667
+    5: 0.824
+
+# ---- Risk Management ---------------------------------------
+risk:
+  max_position_usd: 25           # max $ per single trade
+  max_open_exposure_usd: 75      # max total $ across all open positions
+  max_daily_loss_usd: 50         # stop trading for the day after this loss
+  cooldown_after_losses: 3       # pause trading for N windows after this many consecutive losses
+  cooldown_windows: 6            # how many windows to sit out during cooldown
+  kill_switch: false             # set to true to immediately stop all trading
+
+# ---- Adaptive / Learning Layer ------------------------------
+learning:
+  enabled: true
+  rolling_window: 50             # evaluate performance over last N trades
+  min_trades_to_judge: 10        # need at least this many trades before adjusting
+  underperformance_threshold: 0.42  # win-rate below this → reduce size or disable
+  size_reduction_factor: 0.5     # multiply position size by this when underperforming
+  tighten_threshold_after_losses: true  # require stronger edge after losing streaks
+
+# ---- Dashboard Settings ------------------------------------
+dashboard:
+  enabled: true
+  port: 8050                     # local port for the web dashboard
+  host: "0.0.0.0"               # listen on all interfaces (use 127.0.0.1 for local only)
+
+# ---- Logging ------------------------------------------------
+logging:
+  level: "DEBUG"                  # DEBUG, INFO, WARNING, ERROR
+  log_file: "logs/bot.log"
+  db_file: "data/trades.db"      # SQLite database for trade history
