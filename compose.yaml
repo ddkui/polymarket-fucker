@@ -1,0 +1,17 @@
+services:
+  bot:
+    build: .
+    container_name: btc-polymarket-bot
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+    ports:
+      - "8050:8050"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
