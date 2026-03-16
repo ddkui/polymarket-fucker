@@ -5,7 +5,7 @@
 # Everything else is configured here.
 
 # ---- General ------------------------------------------------
-dry_run: false                   # true = log trades only, false = real orders
+dry_run: true                   # true = log trades only, false = real orders
 timeframes: [5, 15]              # which BTC window lengths to trade (minutes)
 
 # ---- Market & Liquidity Filters -----------------------------
