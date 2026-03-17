@@ -11,14 +11,14 @@ timeframes: [5, 15]              # which BTC window lengths to trade (minutes)
 # ---- Market & Liquidity Filters -----------------------------
 market_filter:
   min_liquidity_usd: 500         # skip markets with less total liquidity
-  max_spread: 0.08               # skip if best-ask minus best-bid > this
+  max_spread: 0.12               # skip if best-ask minus best-bid > this
   min_seconds_before_close: 45   # don't enter if market closes in < N seconds
 
 # ---- Price-Move / Latency Edge -----------------------------
 price_edge:
-  btc_price_source: "binance"  # "coingecko", "binance", or "coinbase"
-  latency_threshold: 0.02        # only trade when polymarket odds lag BTC move by ≥ this
-  price_poll_interval: 3         # seconds between BTC price checks
+  btc_price_source: "binance"    # "coingecko", "binance", or "coinbase"
+  latency_threshold: 0.002       # only trade when polymarket odds lag BTC move by ≥ this
+  price_poll_interval: 1         # seconds between BTC price checks
 
 # ---- Streak / Mean-Reversion Filter -------------------------
 streak_filter:

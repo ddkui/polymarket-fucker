@@ -177,7 +177,8 @@ class CombinedStrategy:
 
         if edge < effective_threshold:
             logger.debug(
-                f"[{slug}] Edge {edge:.4f} < threshold {effective_threshold:.4f}"
+                f"[{slug}] Edge {edge:.4f} < threshold {effective_threshold:.4f} "
+                f"(BTC move: {btc_move_pct:+.5f}, Implied: {poly_implied_up-0.5 if direction=='up' else poly_implied_down-0.5:+.5f})"
             )
             return
 
